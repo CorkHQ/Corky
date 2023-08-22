@@ -1,0 +1,32 @@
+name: Package Corky
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Dependencies
+        run: |
+          sudo apt install flatpak-builder
+      
+      - name: Build Package
+        run: |
+          cd Corky
+          flatpak-builder build-dir io.github.bugadinho.Corky.yaml --repo=repo
+          flatpak build-bundle repo Corky.flatpak io.github.bugadinho.Corky
+      
+      - name: Archive the artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Corky.flatpak
+          path: Corky/Corky.flatpak
