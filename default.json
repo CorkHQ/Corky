@@ -4,6 +4,16 @@
         "type": "proton"
     },
     "roblox": {
-        "channel": "zcanary"
+        "channel": "zcanary",
+        "player": {
+            "environment": {
+            	"SteamAppId": "robloxplayer"
+            }
+        },
+        "studio": {
+            "environment": {
+            	"SteamAppId": "robloxstudio"
+            }
+        }
     }
 }
