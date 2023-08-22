@@ -18,10 +18,10 @@ jobs:
       - name: Dependencies
         run: |
           sudo apt install flatpak-builder
-          flatpak remote-add --if-not-exists \
+          flatpak remote-add --user --if-not-exists \
                   flathub https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install -y org.kde.Sdk/x86_64/6.5
-          flatpak install -y com.riverbankcomputing.PyQt.BaseApp/x86_64/6.5
+          flatpak install --user -y org.kde.Sdk/x86_64/6.5
+          flatpak install --user -y com.riverbankcomputing.PyQt.BaseApp/x86_64/6.5
       
       - name: Build Package
         run: |
