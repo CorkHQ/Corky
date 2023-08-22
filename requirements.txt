@@ -1,0 +1,2 @@
+platformdirs==3.10.*
+joblib==1.3.*

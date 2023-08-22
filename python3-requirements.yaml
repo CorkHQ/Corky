@@ -1,0 +1,31 @@
+# Generated with flatpak-pip-generator --checker-data --output python3-requirements --requirements-file requirements.txt --runtime org.freedesktop.Sdk//22.08 --yaml
+build-commands: []
+buildsystem: simple
+modules:
+  - name: python3-platformdirs
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "platformdirs==3.10.*" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/14/51/fe5a0d6ea589f0d4a1b97824fb518962ad48b27cd346dcdfa2405187997a/platformdirs-3.10.0-py3-none-any.whl
+        sha256: d7c24979f292f916dc9cbf8648319032f551ea8c49a4c9bf2fb556a02070ec1d
+        x-checker-data:
+          name: platformdirs
+          packagetype: bdist_wheel
+          type: pypi
+  - name: python3-joblib
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "joblib==1.3.*" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/10/40/d551139c85db202f1f384ba8bcf96aca2f329440a844f924c8a0040b6d02/joblib-1.3.2-py3-none-any.whl
+        sha256: ef4331c65f239985f3f2220ecc87db222f08fd22097a3dd5698f693875f8cbb9
+        x-checker-data:
+          name: joblib
+          packagetype: bdist_wheel
+          type: pypi
+name: python3-requirements

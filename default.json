@@ -1,0 +1,9 @@
+{
+    "wine": {
+        "dist": "/app/proton/files",
+        "type": "proton"
+    },
+    "roblox": {
+        "channel": "zcanary"
+    }
+}
