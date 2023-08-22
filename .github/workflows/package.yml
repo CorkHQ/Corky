@@ -21,7 +21,6 @@ jobs:
       
       - name: Build Package
         run: |
-          cd Corky
           flatpak-builder build-dir io.github.bugadinho.Corky.yaml --repo=repo
           flatpak build-bundle repo Corky.flatpak io.github.bugadinho.Corky
       
@@ -29,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Corky.flatpak
-          path: Corky/Corky.flatpak
+          path: Corky.flatpak
