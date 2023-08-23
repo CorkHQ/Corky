@@ -73,7 +73,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/Bugadinho/Cork.git
-        commit: 728d4b1e1ba8c90db87af01f65650828ff8bd827
+        commit: 2eed21e99cacd73617d9ee604cc6ac5dd5b06c00
         x-data-checker:
           is-main-source: true
           type: git
