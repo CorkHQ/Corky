@@ -1,7 +1,11 @@
 app-id: io.github.CorkHQ.Corky
 runtime: org.freedesktop.Platform
 runtime-version: '22.08'
+x-gl-version: &gl-version '1.4'
+x-gl-versions: &gl-versions 22.08;1.4
 sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Compat.i386
 command: cork
 
 cleanup-commands:
@@ -13,9 +17,24 @@ finish-args:
   - --share=ipc
   - --allow=devel
   - --socket=pulseaudio
+  - --allow=multiarch
   - --device=all
 
 add-extensions:
+  org.freedesktop.Platform.Compat.i386:
+    directory: lib/i386-linux-gnu
+    version: '22.08'
+  org.freedesktop.Platform.GL32:
+    directory: lib/i386-linux-gnu/GL
+    version: '1.4'
+    versions: 22.08;1.4
+    subdirectories: true
+    no-autodownload: true
+    autodelete: false
+    add-ld-path: lib
+    merge-dirs: vulkan/icd.d;glvnd/egl_vendor.d;OpenCL/vendors;lib/dri;lib/d3d;vulkan/explicit_layer.d;vulkan/implicit_layer.d
+    download-if: active-gl-driver
+    enable-if: active-gl-driver
   com.valvesoftware.Steam.CompatibilityTool:
     subdirectories: true
     directory: share/steam/compatibilitytools.d
@@ -25,6 +44,20 @@ add-extensions:
     autodelete: false
 
 modules:
+  - name: bundle-setup
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/i386-linux-gnu
+      - mkdir -p /app/lib/debug/lib/i386-linux-gnu
+      - mkdir -p /app/lib/i386-linux-gnu/GL
+      - install -Dm644 ld.so.conf /app/etc/ld.so.conf
+    sources:
+      - type: inline
+        dest-filename: ld.so.conf
+        contents: |
+          /app/lib32
+          /app/lib/i386-linux-gnu
+  
   - name: proton
     buildsystem: simple
     build-options:
