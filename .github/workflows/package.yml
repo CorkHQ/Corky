@@ -22,6 +22,7 @@ jobs:
                   flathub https://flathub.org/repo/flathub.flatpakrepo
           flatpak install --user -y flathub org.freedesktop.Platform/x86_64/22.08
           flatpak install --user -y flathub org.freedesktop.Sdk/x86_64/22.08
+          flatpak install --user -y flathub org.freedesktop.Sdk.Compat.i386/x86_64/22.08
       
       - name: Build Package
         run: |
