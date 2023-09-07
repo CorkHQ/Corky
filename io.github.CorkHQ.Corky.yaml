@@ -1,0 +1,136 @@
+app-id: io.github.CorkHQ.Corky
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+command: cork
+
+cleanup-commands:
+  - mkdir -p /app/share/steam/compatibilitytools.d
+
+finish-args:
+  - --share=network
+  - --socket=x11
+  - --share=ipc
+  - --allow=devel
+  - --socket=pulseaudio
+  - --device=all
+
+add-extensions:
+  com.valvesoftware.Steam.CompatibilityTool:
+    subdirectories: true
+    directory: share/steam/compatibilitytools.d
+    version: stable
+    versions: stable;beta;test
+    no-autodownload: true
+    autodelete: false
+
+modules:
+  - name: proton
+    buildsystem: simple
+    build-options:
+      strip: false
+      no-debuginfo: true
+    build-commands:
+      - mkdir -p /app/proton
+      - tar -C /app/proton --strip-components 1 -xvf proton.tar.gz --skip-old-files --delay-directory-restore --absolute-names
+    sources:
+      - type: file
+        dest-filename: proton.tar.gz
+        url: https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-13/GE-Proton8-13.tar.gz
+        sha256: 5dd21061b5aa04589dadc59a0316ed91680a0b61b908548f35a9888649bf9eaa
+  
+  - name: nlohmann-json
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DJSON_BuildTests=OFF
+    sources:
+      - type: archive
+        url: https://github.com/nlohmann/json/archive/v3.11.2.tar.gz
+        sha256: d69f9deb6a75e2580465c6c4c5111b89c4dc2fa94e3a85fcd2ffcd9a143d9273
+  
+  - name: libzip
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    sources:
+      - type: archive
+        url: https://github.com/nih-at/libzip/archive/v1.10.1.tar.gz
+        sha256: d56d857d1c3ad4a7f3a4c01a51c6a6e5530e35ab93503f62276e8ba2b306186a
+  
+  - name: libzippp
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://github.com/ctabin/libzippp/archive/refs/tags/libzippp-v6.1-1.9.2.tar.gz
+        sha256: 3796f174780f23938749da493cf4cbc4c55f84a568ec395f2c256dfe10129305
+  
+  - name: tomlplusplus
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://github.com/marzer/tomlplusplus/archive/refs/tags/v3.3.0.tar.gz
+        sha256: fc1a5eb410f3c67e90e5ad1264a1386d020067cfb01b633cc8c0441789aa6cf2
+  
+  - name: platform_folders
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://github.com/sago007/PlatformFolders/archive/refs/tags/4.2.0.tar.gz
+        sha256: 31bb0f64a27315aec8994f226332aaafe9888d00bb69a2ff2dff9912e2f4ccf4
+  
+  - name: cpr
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCPR_USE_SYSTEM_CURL=ON
+    sources:
+      - type: archive
+        url: https://github.com/libcpr/cpr/archive/refs/tags/1.10.2.tar.gz
+        sha256: 044e98079032f7abf69c4c82f90ee2b4e4a7d2f28245498a5201ad6e8d0b1d08
+  
+  - name: boost
+    buildsystem: simple
+    build-commands:
+      - ./bootstrap.sh --prefix=/app --with-libraries=headers,system,log
+      - ./b2 install variant=release link=shared runtime-link=shared cxxflags="$CXXFLAGS"
+        linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS
+    sources:
+      - type: archive
+        url: https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2
+        sha256: 6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e
+        x-checker-data:
+          type: html
+          url: https://www.boost.org/feed/downloads.rss
+          version-pattern: <item><title>Version ([\d\.]+)<\/title>
+          url-template: https://boostorg.jfrog.io/artifactory/main/release/${version}/source/boost_${major}_${minor}_${patch}.tar.bz2
+  
+  - name: cork
+    buildsystem: simple
+    build-commands:
+      - mkdir build
+      - cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release
+      - cmake --build build/ --target all
+      - cmake --install build/ --prefix /app
+    post-install:
+      - mv -v /app/share/applications/roblox-player.desktop /app/share/applications/${FLATPAK_ID}.robloxplayer.desktop
+      - mv -v /app/share/applications/roblox-studio.desktop /app/share/applications/${FLATPAK_ID}.robloxstudio.desktop
+      - desktop-file-edit /app/share/applications/${FLATPAK_ID}.robloxplayer.desktop
+        --set-icon=${FLATPAK_ID}.robloxplayer --set-key=StartupWMClass --set-value='steam_app_robloxplayer'
+      - desktop-file-edit /app/share/applications/${FLATPAK_ID}.robloxstudio.desktop
+        --set-icon=${FLATPAK_ID}.robloxstudio --set-key=StartupWMClass --set-value='steam_app_robloxstudio'
+      - cp -v /app/share/icons/hicolor/scalable/apps/cork.svg -T /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg
+      - cp -v /app/share/icons/hicolor/scalable/apps/roblox-player.svg -T /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.robloxplayer.svg
+      - cp -v /app/share/icons/hicolor/scalable/apps/roblox-studio.svg -T /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.robloxstudio.svg
+    sources:
+      - type: git
+        url: https://github.com/CorkHQ/Cork.git
+        commit: 5b9ca003968032666d26b97933facb4830ee4e29
+      - type: patch
+        path: defaults.patch

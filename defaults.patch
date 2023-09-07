@@ -1,0 +1,32 @@
+diff --git a/src/settings/default.hpp b/src/settings/default.hpp
+index e911d66..bc74fbf 100644
+--- a/src/settings/default.hpp
++++ b/src/settings/default.hpp
+@@ -9,8 +9,8 @@ static const std::string defaultSettings =
+     "\n"
+ #if defined(WINE_RUNNER)
+     "[wine]\n"
+-    "dist = \"\"\n"
+-    "type = \"wine64\"\n"
++    "dist = \"/app/proton\"\n"
++    "type = \"proton\"\n"
+     "\n"
+     "[wine.env]\n"
+     "\"WINEDLLOVERRIDES\" = \"winemenubuilder.exe=d\"\n"
+@@ -25,7 +25,7 @@ static const std::string defaultSettings =
+     "[player.fflags]\n"
+     "\n"
+     "[player.env]\n"
+-    "\n"
++    "SteamAppId = \"robloxplayer\"\n"
+     "\n"
+     "[studio]\n"
+     "channel = \"\"\n"
+@@ -34,4 +34,4 @@ static const std::string defaultSettings =
+     "pre = \"\"\n"
+     "post = \"\"\n"
+     "[studio.env]\n"
+-    "\n";
+\ No newline at end of file
++    "SteamAppId = \"robloxstudio\"\n";
+\ No newline at end of file
