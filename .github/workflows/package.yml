@@ -20,13 +20,12 @@ jobs:
           sudo apt install flatpak-builder
           flatpak remote-add --user --if-not-exists \
                   flathub https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install --user -y org.kde.Sdk/x86_64/6.5
-          flatpak install --user -y com.riverbankcomputing.PyQt.BaseApp/x86_64/6.5
+          flatpak install --user -y flathub org.freedesktop.Sdk/x86_64/22.08
       
       - name: Build Package
         run: |
-          flatpak-builder build-dir io.github.bugadinho.Corky.yaml --repo=repo
-          flatpak build-bundle repo Corky.flatpak io.github.bugadinho.Corky
+          flatpak-builder build-dir io.github.CorkHQ.Corky.yaml --repo=repo
+          flatpak build-bundle repo Corky.flatpak io.github.CorkHQ.Corky
       
       - name: Archive the artifacts
         uses: actions/upload-artifact@v2
