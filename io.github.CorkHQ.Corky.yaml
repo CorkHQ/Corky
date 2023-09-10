@@ -19,6 +19,7 @@ finish-args:
   - --socket=pulseaudio
   - --allow=multiarch
   - --device=all
+  - --env=PATH=/app/bin:/app/utils/bin:/usr/bin:/usr/lib/extensions/vulkan/MangoHud/bin/:/usr/bin:/usr/lib/extensions/vulkan/OBSVkCapture/bin/:/usr/lib/extensions/vulkan/gamescope/bin/
 
 add-extensions:
   org.freedesktop.Platform.Compat.i386:
