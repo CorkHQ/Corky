@@ -165,6 +165,6 @@ modules:
     sources:
       - type: git
         url: https://github.com/CorkHQ/Cork.git
-        commit: 07027ea882d914e8d9cb79cdfde0350962d112be
+        commit: 8372450ec7c1f5d831fd237dc07641c66df2e1c9
       - type: patch
         path: defaults.patch
