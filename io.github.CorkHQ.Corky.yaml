@@ -145,11 +145,23 @@ modules:
           version-pattern: <item><title>Version ([\d\.]+)<\/title>
           url-template: https://boostorg.jfrog.io/artifactory/main/release/${version}/source/boost_${major}_${minor}_${patch}.tar.bz2
   
+  - shared-modules/lua5.4/lua-5.4.json
+
+  - name: sol2
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DSOL2_BUILD_LUA=false
+    sources:
+      - type: git
+        url: https://github.com/ThePhD/sol2.git
+        commit: 9c882a28fdb6f4ad79a53a4191b43ce48a661175
+  
   - name: cork
     buildsystem: simple
     build-commands:
       - mkdir build
-      - cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release
+      - cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -DCORK_VENDOR_PATH=/app/cork -DLUA_LIBRARIES=$FLATPAK_DEST/lib/liblua.so -DLUA_INCLUDE_DIR=$FLATPAK_DEST/include
       - cmake --build build/ --target all
       - cmake --install build/ --prefix /app
     post-install:
@@ -165,6 +177,13 @@ modules:
     sources:
       - type: git
         url: https://github.com/CorkHQ/Cork.git
-        commit: 2d97141fefd6661b77059eac7692a6b81d9732c4
-      - type: patch
-        path: defaults.patch
+        commit: 816d036eed0bece226700a4f802e2ff229bb8e58
+  
+  - name: vendor
+    buildsystem: simple
+    build-commands:
+      - mkdir /app/cork
+      - cp settings.toml /app/cork
+    sources:
+      - type: file
+        path: vendor/settings.toml

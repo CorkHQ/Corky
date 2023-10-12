@@ -1,0 +1,9 @@
+[wine]
+dist = '/app/proton'
+type = 'proton'
+
+[player.env]
+SteamAppId = 'robloxplayer'
+
+[studio.env]
+SteamAppId = 'robloxstudio'
