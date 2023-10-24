@@ -98,8 +98,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
     sources:
       - type: archive
-        url: https://github.com/ctabin/libzippp/archive/refs/tags/libzippp-v6.1-1.9.2.tar.gz
-        sha256: 3796f174780f23938749da493cf4cbc4c55f84a568ec395f2c256dfe10129305
+        url: https://github.com/ctabin/libzippp/archive/refs/tags/libzippp-v7.0-1.10.1.tar.gz
+        sha256: 67d6808406b4fc255016ede52c7b5105e2d0e43899a3331de9ed86da5dea07a1
   
   - name: tomlplusplus
     buildsystem: cmake-ninja
@@ -107,8 +107,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
     sources:
       - type: archive
-        url: https://github.com/marzer/tomlplusplus/archive/refs/tags/v3.3.0.tar.gz
-        sha256: fc1a5eb410f3c67e90e5ad1264a1386d020067cfb01b633cc8c0441789aa6cf2
+        url: https://github.com/marzer/tomlplusplus/archive/refs/tags/v3.4.0.tar.gz
+        sha256: 8517f65938a4faae9ccf8ebb36631a38c1cadfb5efa85d9a72e15b9e97d25155
   
   - name: platform_folders
     buildsystem: cmake-ninja
@@ -126,8 +126,8 @@ modules:
       - -DCPR_USE_SYSTEM_CURL=ON
     sources:
       - type: archive
-        url: https://github.com/libcpr/cpr/archive/refs/tags/1.10.2.tar.gz
-        sha256: 044e98079032f7abf69c4c82f90ee2b4e4a7d2f28245498a5201ad6e8d0b1d08
+        url: https://github.com/libcpr/cpr/archive/refs/tags/1.10.5.tar.gz
+        sha256: c8590568996cea918d7cf7ec6845d954b9b95ab2c4980b365f582a665dea08d8
   
   - name: boost
     buildsystem: simple
