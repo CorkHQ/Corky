@@ -177,7 +177,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/CorkHQ/Cork.git
-        commit: ef11db592c28f7fa6895dfa704f5f4394bf7897c  
+        commit: 9c8b1dd1c5a56526c60cb27d5caaf59b4c1911b0
+      
   - name: vendor
     buildsystem: simple
     build-commands:
