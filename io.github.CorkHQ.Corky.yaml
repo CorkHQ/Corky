@@ -187,3 +187,12 @@ modules:
     sources:
       - type: file
         path: vendor/settings.toml
+  
+  - name: plugins
+    buildsystem: simple
+    build-commands:
+      - mkdir /app/cork/plugins
+      - cp -r RendererSwitcher /app/cork/plugins
+    sources:
+      - type: dir
+        path: Plugins
