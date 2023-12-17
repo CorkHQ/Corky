@@ -27,6 +27,8 @@ jobs:
           flatpak install --user -y flathub org.freedesktop.Platform/x86_64/23.08
           flatpak install --user -y flathub org.freedesktop.Sdk/x86_64/23.08
           flatpak install --user -y flathub org.freedesktop.Sdk.Compat.i386/x86_64/23.08
+          flatpak install --user -y flathub org.freedesktop.Sdk.Extension.toolchain-i386/x86_64/23.08
+          flatpak install --user -y flathub org.freedesktop.Sdk.Extension.mingw-w64/x86_64/23.08
       
       - name: Build Package
         run: |

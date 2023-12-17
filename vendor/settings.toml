@@ -1,3 +1,2 @@
 [wine]
-dist = '/app/wine'
 type = 'wine'

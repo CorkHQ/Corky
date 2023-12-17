@@ -6,6 +6,8 @@ x-gl-versions: &gl-versions 23.08;23.08extra;1.4
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Compat.i386
+  - org.freedesktop.Sdk.Extension.toolchain-i386
+  - org.freedesktop.Sdk.Extension.mingw-w64
 command: cork
 
 cleanup-commands:
@@ -43,6 +45,10 @@ add-extensions:
     versions: stable;beta;test
     no-autodownload: true
     autodelete: false
+  org.winehq.Wine.gecko:
+    directory: share/wine/gecko
+  org.winehq.Wine.mono:
+    directory: share/wine/mono
 
 modules:
   - name: bundle-setup
@@ -58,20 +64,6 @@ modules:
         contents: |
           /app/lib32
           /app/lib/i386-linux-gnu
-  
-  - name: wine
-    buildsystem: simple
-    build-options:
-      strip: false
-      no-debuginfo: true
-    build-commands:
-      - mkdir -p /app/wine
-      - tar -C /app/wine --strip-components 1 -xvf wine-ge.tar.gz --skip-old-files --delay-directory-restore --absolute-names
-    sources:
-      - type: file
-        dest-filename: wine-ge.tar.gz
-        url: https://github.com/GloriousEggroll/wine-ge-custom/releases/download/GE-Proton8-25/wine-lutris-GE-Proton8-25-x86_64.tar.xz
-        sha256: 466f5d77d7b9821f1023859a5e467b9344afd25cb3018b04ac0e89c9d25fd8c0
   
   - name: nlohmann-json
     buildsystem: cmake-ninja
@@ -207,3 +199,116 @@ modules:
       - type: archive
         url: https://github.com/doitsujin/dxvk/releases/download/v2.3/dxvk-2.3.tar.gz
         sha256: 8059c06fc84a864122cc572426f780f35921eb4e3678dc337e9fd79ee5a427c0
+    
+# Wine Test (from Vinegar)
+  - name: libusb
+    sources:
+      - type: archive
+        url: https://github.com/libusb/libusb/releases/download/v1.0.26/libusb-1.0.26.tar.bz2
+        sha256: 12ce7a61fc9854d1d2a1ffe095f7b5fac19ddba095c259e6067a46500381b5a5
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/libusb/libusb/releases/latest
+          tag-query: .tag_name
+          version-query: $tag | sub("^[vV]"; "")
+          timestamp-query: .published_at
+          url-query: .assets[] | select(.name=="libusb-\($version).tar.bz2") | .browser_download_url
+    modules:
+
+      - name: eudev
+        cleanup:
+          - /bin
+          - /sbin
+          - /lib*/udev
+        post-install:
+          - udevadm hwdb --update --usr
+        sources:
+          - type: archive
+            url: https://github.com/eudev-project/eudev/releases/download/v3.2.14/eudev-3.2.14.tar.gz
+            sha256: 8da4319102f24abbf7fff5ce9c416af848df163b29590e666d334cc1927f006f
+            x-checker-data:
+              type: json
+              url: https://api.github.com/repos/gentoo/eudev/releases/latest
+              tag-query: .tag_name
+              version-query: $tag | sub("^[vV]"; "")
+              timestamp-query: .published_at
+              url-query: .assets[] | select(.name=="eudev-\($version).tar.gz") | .browser_download_url
+
+  - name: vkd3d
+    sources:
+      - type: archive
+        url: https://dl.winehq.org/vkd3d/source/vkd3d-1.8.tar.xz
+        sha256: e0cec19cc9535715c72ec3a16cdec29dc14d5ccec73526387b5843cf75628ac5
+    modules:
+      - name: spirv-deps
+        buildsystem: cmake-ninja
+        builddir: true
+        config-opts:
+          - -DSPIRV_SKIP_EXECUTABLES=ON
+        cleanup:
+          - /bin
+        sources:
+          - type: git
+            url: https://github.com/KhronosGroup/SPIRV-Headers.git
+            tag: sdk-1.3.261.1
+            commit: 124a9665e464ef98b8b718d572d5f329311061eb
+            x-checker-data:
+              type: git
+              tag-pattern: ^sdk-([\d.]+)$
+
+  - name: wine
+    build-options:
+      arch:
+        x86_64:
+          config-opts:
+            - --enable-win64
+            - --with-mingw=ccache x86_64-w64-mingw32-gcc
+          libdir: /app/lib
+      env:
+        LIBDIR: lib
+    config-opts:
+      - --disable-win16
+      - --disable-tests
+      - --with-x
+      - --with-pulse
+      - --with-dbus
+      - --without-oss
+    make-install-args:
+      - LDCONFIG=/bin/true
+      - UPDATE_DESKTOP_DATABASE=/bin/true
+      - INSTALL_PROGRAM_FLAGS=-s
+    sources:
+      - type: archive
+        url: https://dl.winehq.org/wine/source/8.x/wine-8.18.tar.xz
+        sha256: 30faef14acf70fd5f739d2fece3432839f1f7dd2d3624bcc3662c3b1b83260db
+        x-addons-url: &wine-addons-url >-
+          https://source.winehq.org/git/wine.git/blob_plain/refs/heads/stable:/dlls/appwiz.cpl/addons.c
+      - type: patch
+        paths:
+          - segregrevert.patch
+      - type: git
+        url: https://gitlab.winehq.org/wine/wine-staging.git
+        commit: a5625909787122a39f2795a9ebf553a66c6f0a92 
+        tag: v8.18
+      - type: patch
+        paths:
+          - loader-prefer-winedllpath.patch
+      - type: shell
+        commands:
+          - staging/patchinstall.py --destdir=. --all
+
+  - name: wine64to32
+    buildsystem: simple
+    build-commands:
+      - ln -s /app/bin/wine64 /app/bin/wine
+
+  - name: wine-mono
+    buildsystem: simple
+    build-commands:
+      - mkdir -p ${FLATPAK_DEST}/share/wine/mono/
+      - cp -a wine-mono-* ${FLATPAK_DEST}/share/wine/mono/
+    sources:
+      - type: archive
+        url: https://dl.winehq.org/wine/wine-mono/8.0.0/wine-mono-8.0.0-x86.tar.xz
+        strip-components: 0
+        sha256: 14c7d76780b79dc62d8ed9d1759e7adcfa332bb2406e2e694dee7b2128cc7a77
