@@ -193,6 +193,19 @@ modules:
     build-commands:
       - mkdir /app/cork/plugins
       - cp -r RendererSwitcher /app/cork/plugins
+      - cp -r VendorDXVK /app/cork/plugins
     sources:
       - type: dir
         path: Plugins
+  
+  - name: dxvk
+    buildsystem: simple
+    build-commands:
+      - mkdir /app/cork/plugins/VendorDXVK/bin32
+      - mkdir /app/cork/plugins/VendorDXVK/bin64
+      - cp -r x32 /app/cork/plugins/VendorDXVK/bin32
+      - cp -r x64 /app/cork/plugins/VendorDXVK/bin64
+    sources:
+      - type: archive
+        url: https://github.com/doitsujin/dxvk/releases/download/v2.3/dxvk-2.3.tar.gz
+        sha256: 8059c06fc84a864122cc572426f780f35921eb4e3678dc337e9fd79ee5a427c0
