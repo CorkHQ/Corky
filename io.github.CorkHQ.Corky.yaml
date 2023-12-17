@@ -148,7 +148,6 @@ modules:
     config-opts:
       - --disable-win16
       - --disable-tests
-      - --disable_amd_ags_x64
       - --with-x
       - --with-pulse
       - --with-dbus
