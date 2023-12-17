@@ -164,11 +164,9 @@ modules:
         paths:
           - loader-prefer-winedllpath.patch
       - type: shell
-        dest: wine
         commands:
           - autoreconf -fiv
       - type: shell
-        dest: wine
         commands:
           - tools/make_requests
           - dlls/winevulkan/make_vulkan --verbose --xml vk.xml
