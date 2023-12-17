@@ -337,7 +337,7 @@ modules:
       - cp -r VendorDXVK /app/cork/plugins
     sources:
       - type: dir
-        path: Plugins
+        path: vendor/plugins
   
   - name: dxvk
     buildsystem: simple

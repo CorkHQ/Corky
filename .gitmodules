@@ -4,3 +4,6 @@
 [submodule "Plugins"]
 	path = Plugins
 	url = https://github.com/CorkHQ/Plugins.git
+[submodule "vendor/plugins"]
+	path = vendor/plugins
+	url = https://github.com/CorkHQ/Plugins.git
