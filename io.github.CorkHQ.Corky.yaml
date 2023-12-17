@@ -149,6 +149,10 @@ modules:
       - type: patch
         paths:
           - loader-prefer-winedllpath.patch
+      - type: shell
+        dest: wine
+        commands:
+          - autoreconf -fiv
 
   - name: wine64to32
     buildsystem: simple
