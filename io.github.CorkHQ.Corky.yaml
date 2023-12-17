@@ -148,9 +148,6 @@ modules:
         commit: 66cd5c1c1f1cae4c76e74c5e82d7b4f1fa4d7550
       - type: patch
         paths:
-          - segregrevert.patch
-      - type: patch
-        paths:
           - loader-prefer-winedllpath.patch
 
   - name: wine64to32
