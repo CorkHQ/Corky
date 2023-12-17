@@ -143,11 +143,9 @@ modules:
       - UPDATE_DESKTOP_DATABASE=/bin/true
       - INSTALL_PROGRAM_FLAGS=-s
     sources:
-      - type: archive
-        url: https://dl.winehq.org/wine/source/8.x/wine-8.18.tar.xz
-        sha256: 30faef14acf70fd5f739d2fece3432839f1f7dd2d3624bcc3662c3b1b83260db
-        x-addons-url: &wine-addons-url >-
-          https://source.winehq.org/git/wine.git/blob_plain/refs/heads/stable:/dlls/appwiz.cpl/addons.c
+      - type: git
+        url: https://github.com/ValveSoftware/wine.git
+        commit: 66cd5c1c1f1cae4c76e74c5e82d7b4f1fa4d7550
       - type: patch
         paths:
           - segregrevert.patch
