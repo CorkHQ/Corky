@@ -135,23 +135,6 @@ modules:
               type: git
               tag-pattern: ^sdk-([\d.]+)$
   
-  - name: libdrm
-        buildsystem: meson
-        config-opts:
-          - -Dintel=disabled
-          - -Dradeon=disabled
-          - -Damdgpu=enabled
-          - -Dnouveau=disabled
-          - -Dvmwgfx=disabled
-          - -Dcairo-tests=disabled
-          - -Dtests=false
-          - --default-library=static
-        sources:
-          - type: git
-            url: https://gitlab.freedesktop.org/mesa/drm.git
-            commit: 02a41cf302a69f0cd94aae96ec01d98b9398076e
-            tag: libdrm-2.4.118
-
   - name: wine
     build-options:
       arch:
@@ -165,6 +148,7 @@ modules:
     config-opts:
       - --disable-win16
       - --disable-tests
+      - --disable_amd_ags_x64
       - --with-x
       - --with-pulse
       - --with-dbus
