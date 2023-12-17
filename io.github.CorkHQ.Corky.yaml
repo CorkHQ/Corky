@@ -163,7 +163,7 @@ modules:
       - type: patch
         paths:
           - loader-prefer-winedllpath.patch
-            - type: shell
+      - type: shell
         dest: wine
         commands:
           - autoreconf -fiv
