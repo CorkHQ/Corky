@@ -144,15 +144,11 @@ modules:
       - INSTALL_PROGRAM_FLAGS=-s
     sources:
       - type: git
-        url: https://github.com/ValveSoftware/wine.git
-        commit: 66cd5c1c1f1cae4c76e74c5e82d7b4f1fa4d7550
+        url: https://github.com/GloriousEggroll/proton-wine.git
+        commit: 3061bb04122124447acc0ab2a569128414d041cb
       - type: patch
         paths:
           - loader-prefer-winedllpath.patch
-      - type: shell
-        dest: wine
-        commands:
-          - autoreconf -fiv
 
   - name: wine64to32
     buildsystem: simple
