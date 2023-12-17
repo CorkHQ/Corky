@@ -201,10 +201,8 @@ modules:
   - name: dxvk
     buildsystem: simple
     build-commands:
-      - mkdir /app/cork/plugins/VendorDXVK/bin32
-      - mkdir /app/cork/plugins/VendorDXVK/bin64
-      - cp -r x32 /app/cork/plugins/VendorDXVK/bin32
-      - cp -r x64 /app/cork/plugins/VendorDXVK/bin64
+      - mv x32 /app/cork/plugins/VendorDXVK/bin32
+      - mv x64 /app/cork/plugins/VendorDXVK/bin64
     sources:
       - type: archive
         url: https://github.com/doitsujin/dxvk/releases/download/v2.3/dxvk-2.3.tar.gz
