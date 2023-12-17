@@ -10,6 +10,24 @@ sdk-extensions:
   - org.freedesktop.Sdk.Extension.mingw-w64
 command: cork
 
+cleanup:
+  - '*.a'
+  - '*.la'
+  - /share/doc
+  - /share/man
+
+  - /bin/function_grep.pl
+  - /bin/widl
+  - /bin/winecpp
+  - /bin/winedump
+  - /bin/wineg++
+  - /bin/winegcc
+  - /bin/winemaker
+  - /bin/wmc
+  - /bin/wrc
+  - /include/wine
+  - /lib/wine/*.def
+  - /lib32/wine/*.def
 cleanup-commands:
   - mkdir -p /app/share/steam/compatibilitytools.d
 
@@ -22,6 +40,7 @@ finish-args:
   - --allow=multiarch
   - --device=all
   - --env=PATH=/app/bin:/app/utils/bin:/usr/bin:/usr/lib/extensions/vulkan/MangoHud/bin/:/usr/bin:/usr/lib/extensions/vulkan/OBSVkCapture/bin/:/usr/lib/extensions/vulkan/gamescope/bin/
+  - --env=WINEDLLPATH=/app/dlls/lib32:/app/dlls/lib
 
 add-extensions:
   org.freedesktop.Platform.Compat.i386:
@@ -68,6 +87,9 @@ modules:
   - name: bundle-setup
     buildsystem: simple
     build-commands:
+      - mkdir -p ${FLATPAK_DEST}/dlls
+      - mkdir /app/dlls/lib -p
+      - mkdir /app/dlls/lib32 -p
       - mkdir -p /app/lib/i386-linux-gnu
       - mkdir -p /app/lib/debug/lib/i386-linux-gnu
       - mkdir -p /app/lib/i386-linux-gnu/GL
@@ -162,7 +184,10 @@ modules:
         commit: 66cd5c1c1f1cae4c76e74c5e82d7b4f1fa4d7550
       - type: patch
         paths:
-          - loader-prefer-winedllpath.patch
+          - patches/wine/de-steamify-80.patch
+      - type: patch
+        paths:
+          - patches/wine/loader-prefer-winedllpath.patch
       - type: shell
         commands:
           - autoreconf -fiv
