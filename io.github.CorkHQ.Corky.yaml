@@ -329,8 +329,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/CorkHQ/Cork.git
-        commit: 9c8b1dd1c5a56526c60cb27d5caaf59b4c1911b0
-  
+        commit: 65f7d9fd1fe0805838737adae75610a72279ef5a
+
   # Flatpak-specific configuration and plugins
   - name: vendor
     buildsystem: simple
