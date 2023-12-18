@@ -352,11 +352,28 @@ modules:
         path: vendor/plugins
   
   - name: dxvk
-    buildsystem: simple
-    build-commands:
-      - mv x32 /app/cork/plugins/VendorDXVK/bin32
-      - mv x64 /app/cork/plugins/VendorDXVK/bin64
-    sources:
-      - type: archive
-        url: https://github.com/doitsujin/dxvk/releases/download/v2.3/dxvk-2.3.tar.gz
-        sha256: 8059c06fc84a864122cc572426f780f35921eb4e3678dc337e9fd79ee5a427c0
+    buildsystem: meson
+    build-options:
+      config-opts:
+        - --cross-file=../build-win64.txt
+        - --cross-file=../dxvk-ccache-win64.txt
+        - --libdir=lib
+        - --bindir=/app/cork/plugins/VendorDXVK/bin64
+      env:
+        SUFFIX: ''
+      ldflags: ''
+      ldflags-override: true
+    config-opts: &dxvk-config-opts
+      - --buildtype=release
+      - --strip
+      - -Denable_dxgi=true
+      - -Denable_d3d9=true
+      - -Denable_d3d10=true
+      - -Denable_d3d11=true
+    sources: &dxvk-sources
+      - type: git
+        url: https://github.com/doitsujin/dxvk.git
+        commit: 1b31aa5dbca0749d0737cff02043acb061332fb6
+      - type: file
+        path: dxvk-ccache-win64.txt
+
