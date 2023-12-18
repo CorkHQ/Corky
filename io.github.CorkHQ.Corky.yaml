@@ -82,6 +82,18 @@ x-compat-i386-opts: &compat_i386_opts
 
 build-options:
   append-path: /usr/lib/sdk/mingw-w64/bin
+  cflags: &optflags >-
+    -O2
+    -pipe
+    -march=sandybridge
+    -mtune=generic
+    -mfpmath=sse
+    -fwrapv
+    -fno-strict-aliasing
+    -mcmodel=small
+  cflags-override: true
+  cxxflags: *optflags
+  cxxflags-override: true
 
 modules:
   - name: bundle-setup
