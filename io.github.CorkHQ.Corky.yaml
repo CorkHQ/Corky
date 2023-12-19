@@ -127,7 +127,6 @@ modules:
           timestamp-query: .published_at
           url-query: .assets[] | select(.name=="libusb-\($version).tar.bz2") | .browser_download_url
     modules:
-
       - name: eudev
         cleanup:
           - /bin
@@ -284,7 +283,7 @@ modules:
   - name: boost
     buildsystem: simple
     build-commands:
-      - ./bootstrap.sh --prefix=/app --with-libraries=headers,system,log
+      - ./bootstrap.sh --prefix=/app --with-libraries=headers,system,log,program_options
       - ./b2 install variant=release link=shared runtime-link=shared cxxflags="$CXXFLAGS"
         linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS
     sources:
@@ -310,12 +309,12 @@ modules:
         commit: 9c882a28fdb6f4ad79a53a4191b43ce48a661175
   
   - name: cork
-    buildsystem: simple
-    build-commands:
-      - mkdir build
-      - cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -DCORK_VENDOR_PATH=/app/cork -DLUA_LIBRARIES=$FLATPAK_DEST/lib/liblua.so -DLUA_INCLUDE_DIR=$FLATPAK_DEST/include
-      - cmake --build build/ --target all
-      - cmake --install build/ --prefix /app
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCORK_VENDOR_PATH=/app/cork
+      - -DLUA_LIBRARIES=$FLATPAK_DEST/lib/liblua.so
+      - -DLUA_INCLUDE_DIR=$FLATPAK_DEST/include
     post-install:
       - mv -v /app/share/applications/roblox-player.desktop /app/share/applications/${FLATPAK_ID}.robloxplayer.desktop
       - mv -v /app/share/applications/roblox-studio.desktop /app/share/applications/${FLATPAK_ID}.robloxstudio.desktop
