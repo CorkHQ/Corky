@@ -347,8 +347,9 @@ modules:
       - cp -r RendererSwitcher /app/cork/plugins
       - cp -r VendorDXVK /app/cork/plugins
     sources:
-      - type: dir
-        path: vendor/plugins
+      - type: git
+        url: https://github.com/CorkHQ/Plugins.git
+        commit: 07dba3cc80d25d25ba814b9aef05d7bfb73edd26
   
   - name: dxvk
     buildsystem: meson
