@@ -1,3 +1,5 @@
+# Heavily based on and modified from org.vinegarhq.Vinegar, org.winehq.Wine and com.valvesoftware.Steam.CompatibilityTool.Proton-GE
+
 app-id: io.github.CorkHQ.Corky
 runtime: org.freedesktop.Platform
 runtime-version: '23.08'
@@ -113,7 +115,7 @@ modules:
           /app/lib32
           /app/lib/i386-linux-gnu
   
-  # Build Wine and dependencies (from Vinegar)
+  # [Build Wine and dependencies]
   - name: libusb
     sources:
       - type: archive
@@ -223,7 +225,7 @@ modules:
         strip-components: 0
         sha256: 14c7d76780b79dc62d8ed9d1759e7adcfa332bb2406e2e694dee7b2128cc7a77
 
-  # Build Cork and dependencies
+  # [Build Cork and dependencies]
   - name: nlohmann-json
     buildsystem: cmake-ninja
     config-opts:
@@ -330,7 +332,7 @@ modules:
         url: https://github.com/CorkHQ/Cork.git
         commit: 65f7d9fd1fe0805838737adae75610a72279ef5a
 
-  # Flatpak-specific configuration and plugins
+  # [Flatpak-specific configuration and plugins]
   - name: vendor
     buildsystem: simple
     build-commands:
