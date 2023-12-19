@@ -93,6 +93,7 @@ build-options:
     -fwrapv
     -fno-strict-aliasing
     -mcmodel=small
+    -fvect-cost-model=cheap
   cflags-override: true
   cxxflags: *optflags
   cxxflags-override: true
