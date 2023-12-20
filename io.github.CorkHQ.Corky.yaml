@@ -195,7 +195,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/ValveSoftware/wine.git
-        commit: 66cd5c1c1f1cae4c76e74c5e82d7b4f1fa4d7550
+        commit: 26425af97506e119f76d636ecc95d647e91afa83
       - type: patch
         paths:
           - patches/wine/de-steamify-80.patch
