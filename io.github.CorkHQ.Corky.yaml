@@ -348,7 +348,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/CorkHQ/Cork.git
-        commit: 7551ddb2442ff8f44db878866742bf2357199071
+        commit: 053ab7d1f2194d086cb47437793fc21f109ba4b1
 
   # [Flatpak-specific configuration and plugins]
   - name: vendor
